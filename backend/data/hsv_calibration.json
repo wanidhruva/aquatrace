@@ -1,0 +1,117 @@
+{
+  "calibrated_at": "2026-09-26T07:21:43Z",
+  "dataset": "FloodNet (Hurricane Harvey UAS Imagery)",
+  "thresholds": {
+    "turbid_muddy": {
+      "hsv_lo": [
+        8,
+        28,
+        30
+      ],
+      "hsv_hi": [
+        42,
+        230,
+        220
+      ],
+      "description": "Murky tan/brown suspended sediment typical of storm runoff"
+    },
+    "deep_canal": {
+      "hsv_lo": [
+        42,
+        30,
+        30
+      ],
+      "hsv_hi": [
+        135,
+        240,
+        245
+      ],
+      "description": "Canal Reach A, storm outfalls, algae and deeper standing water"
+    },
+    "reflective_pavement": {
+      "hsv_lo": [
+        0,
+        8,
+        28
+      ],
+      "hsv_hi": [
+        180,
+        70,
+        160
+      ],
+      "description": "Low-saturation reflective sheen on flooded roadways and culverts"
+    }
+  },
+  "benchmark_results": [
+    {
+      "image": "10163.jpg",
+      "width": 4000,
+      "height": 3000,
+      "old_cyan_detection_pct": 0.0,
+      "calibrated_flood_water_pct": 96.01,
+      "breakdown": {
+        "turbid_pct": 95.55,
+        "deep_pct": 0.76,
+        "pavement_pct": 1.89,
+        "total_water_pct": 96.01
+      },
+      "dominant_component": "Turbid / Muddy Silt"
+    },
+    {
+      "image": "10164.jpg",
+      "width": 4000,
+      "height": 3000,
+      "old_cyan_detection_pct": 0.0,
+      "calibrated_flood_water_pct": 96.2,
+      "breakdown": {
+        "turbid_pct": 95.16,
+        "deep_pct": 1.43,
+        "pavement_pct": 2.03,
+        "total_water_pct": 96.2
+      },
+      "dominant_component": "Turbid / Muddy Silt"
+    },
+    {
+      "image": "10808.jpg",
+      "width": 4000,
+      "height": 3000,
+      "old_cyan_detection_pct": 0.14,
+      "calibrated_flood_water_pct": 76.5,
+      "breakdown": {
+        "turbid_pct": 44.96,
+        "deep_pct": 24.92,
+        "pavement_pct": 15.02,
+        "total_water_pct": 76.5
+      },
+      "dominant_component": "Turbid / Muddy Silt"
+    },
+    {
+      "image": "10812.jpg",
+      "width": 4000,
+      "height": 3000,
+      "old_cyan_detection_pct": 1.47,
+      "calibrated_flood_water_pct": 73.79,
+      "breakdown": {
+        "turbid_pct": 40.73,
+        "deep_pct": 24.07,
+        "pavement_pct": 18.33,
+        "total_water_pct": 73.79
+      },
+      "dominant_component": "Turbid / Muddy Silt"
+    },
+    {
+      "image": "normal.mp4 (synthetic)",
+      "width": 640,
+      "height": 360,
+      "old_cyan_detection_pct": 7.25,
+      "calibrated_flood_water_pct": 80.95,
+      "breakdown": {
+        "turbid_pct": 3.06,
+        "deep_pct": 9.39,
+        "pavement_pct": 70.77,
+        "total_water_pct": 80.95
+      },
+      "dominant_component": "Synthetic Canal Water"
+    }
+  ]
+}

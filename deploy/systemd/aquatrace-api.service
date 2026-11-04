@@ -1,0 +1,25 @@
+[Unit]
+Description=AquaTrace flood-telemetry API (live mode)
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=aquatrace
+Group=aquatrace
+WorkingDirectory=/opt/aquatrace
+Environment=AQUATRACE_MODE=live
+Environment=AQUATRACE_AWS_ENABLED=1
+Environment=AWS_REGION=ap-south-1
+# No static keys: the EC2 instance profile supplies credentials.
+ExecStart=/opt/aquatrace/.venv/bin/python -m uvicorn backend.main:app --host 127.0.0.1 --port 8000
+Restart=always
+RestartSec=5
+StandardOutput=journal
+StandardError=journal
+# Bounded logs: journald caps, no runaway disk.
+SystemCallFilter=@system-service
+NoNewPrivileges=true
+
+[Install]
+WantedBy=multi-user.target

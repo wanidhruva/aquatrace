@@ -1,0 +1,15 @@
+# AquaTrace hackathon dependencies. python>=3.9 is required
+# (the code uses str.removeprefix, added in 3.9).
+fastapi>=0.110
+uvicorn[standard]>=0.29
+pydantic>=2.5
+httpx>=0.27
+numpy>=1.26
+pyyaml>=6.0  # camera registry (backend/cameras.yaml)
+opencv-python-headless>=4.8.0
+boto3>=1.34  # AWS: S3 evidence vault, SNS critical alerts, CloudWatch metrics
+             # (all integrations degrade to local storage when AWS is unreachable)
+fpdf2>=2.7  # incident report PDF (GET /api/alerts/{id}/report)
+# OpenCV 5 is recommended for the computer-vision pipeline (the project
+# proposal cites OpenCV 5); OpenCV 4.8+ works wherever OpenCV 5 wheels
+# are not yet available.

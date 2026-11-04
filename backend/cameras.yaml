@@ -1,0 +1,64 @@
+# AquaTrace camera registry.
+#
+# In live mode (AQUATRACE_MODE=live) vision engines start from this file.
+# `source` may be:
+#   sim://<scene>   synthetic demo scene from assets/scenes/<scene>.mp4
+#                   (falls back to normal.mp4 when the scene is missing)
+#   rtsp://...      real camera stream
+#   /path/to.mp4    local video file
+#
+# When this file is missing or unparsable, config.py falls back to the
+# built-in registry (today's 4 sim:// cameras) so demo behavior is unchanged.
+
+cameras:
+  - id: cam-01
+    name: Ganga Tapovan & Lakshman Jhula Gorge
+    zone: Upper Ganga Gorge
+    location: Tapovan / Lakshman Jhula, Rishikesh, Uttarakhand
+    lat: 30.1250
+    lng: 78.3180
+    bearing_deg: 205.0   # camera heading downriver through gorge
+    fov_deg: 65.0        # field of view wedge
+    range_m: 170.0       # cone reach
+    adjacent: [cam-02]
+    source: sim://floodnet_live
+    enabled: true
+
+  - id: cam-02
+    name: Triveni Ghat Flood Gauge & Riverfront
+    zone: Rishikesh Floodplain
+    location: Triveni Ghat, Mayakund, Rishikesh, Uttarakhand
+    lat: 30.1030
+    lng: 78.2970
+    bearing_deg: 195.0   # camera heading, degrees clockwise from true north
+    fov_deg: 75.0        # field of view wedge
+    range_m: 160.0       # cone reach
+    adjacent: [cam-01, cam-03]
+    source: sim://bridge-st-culvert
+    enabled: true
+
+  - id: cam-03
+    name: Veerbhadra Barrage & Sluice Gates
+    zone: Barrage Control Reach
+    location: Veerbhadra Barrage, Ganga River, Rishikesh, Uttarakhand
+    lat: 30.0760
+    lng: 78.2880
+    bearing_deg: 180.0   # camera heading downstream towards barrage
+    fov_deg: 70.0        # field of view wedge
+    range_m: 150.0       # cone reach
+    adjacent: [cam-02, cam-04]
+    source: sim://campus-storm-outfall
+    enabled: true
+
+  - id: cam-04
+    name: Chilla Power Canal Intake & Flood Bypass
+    zone: Chilla Intake Reach
+    location: Chilla Hydroelectric Canal Intake, Ganga Basin, Uttarakhand
+    lat: 30.0520
+    lng: 78.2750
+    bearing_deg: 175.0   # camera heading down bypass
+    fov_deg: 65.0        # field of view wedge
+    range_m: 140.0       # cone reach
+    adjacent: [cam-03]
+    source: sim://riverside-pump-station
+    enabled: true

@@ -1,0 +1,275 @@
+@import "tailwindcss";
+
+/* ============================================================
+   AquaTrace design system — "Neural Interface" (locked tokens)
+   ============================================================ */
+@theme {
+  --color-abyss: #05080d;
+  --color-panel: rgba(255, 255, 255, 0.03);
+  --color-hairline: rgba(255, 255, 255, 0.08);
+  --color-glass: rgba(13, 20, 32, 0.7);
+  --color-live: #22d3ee;
+  --color-nominal: #10b981;
+  --color-watch: #f59e0b;
+  --color-escal: #f97316;
+  --color-crit: #ef4444;
+  --color-ink: #e8eef4;
+  --color-muted: #8b98a9;
+  --color-faint: #5a6b80;
+
+  --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  --ease-neural: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  background: #05080d;
+  color: #e8eef4;
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  overflow: hidden;
+}
+
+/* every numeral on screen is monospaced */
+.num {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.01em;
+}
+
+/* faint grid/noise so black never reads flat */
+.grid-texture {
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.028) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.028) 1px, transparent 1px);
+  background-size: 44px 44px;
+  background-position: center center;
+}
+.noise-texture::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.035;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* glowing status borders */
+.glow-live {
+  box-shadow: 0 0 36px rgba(34, 211, 238, 0.45);
+}
+.glow-crit {
+  box-shadow: 0 0 36px rgba(239, 68, 68, 0.45);
+}
+
+/* pulsing live indicator */
+@keyframes pulse-dot {
+  0% { transform: scale(1); opacity: 1; }
+  70% { transform: scale(2.6); opacity: 0; }
+  100% { transform: scale(2.6); opacity: 0; }
+}
+.pulse-dot::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 9999px;
+  background: currentColor;
+  animation: pulse-dot 1.8s var(--ease-neural) infinite;
+}
+
+@keyframes scan {
+  0% { transform: translateY(-100%); }
+  100% { transform: translateY(100%); }
+}
+.scanline {
+  animation: scan 5.5s linear infinite;
+}
+
+@keyframes marquee {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+.marquee-track {
+  animation: marquee 42s linear infinite;
+}
+.marquee-track:hover {
+  animation-play-state: paused;
+}
+
+@keyframes blink-caret {
+  0%, 45% { opacity: 1; }
+  55%, 100% { opacity: 0.15; }
+}
+.blink {
+  animation: blink-caret 1.4s steps(1, end) infinite;
+}
+
+/* masked word reveal */
+.reveal-mask {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: bottom;
+}
+.reveal-word {
+  display: inline-block;
+  transform: translateY(105%);
+  animation: reveal-up 0.9s var(--ease-neural) forwards;
+}
+@keyframes reveal-up {
+  to { transform: translateY(0); }
+}
+
+/* cursor-tracking spotlight */
+.spotlight {
+  position: relative;
+  isolation: isolate;
+}
+.spotlight::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  opacity: 0;
+  transition: opacity 0.35s var(--ease-neural);
+  background: radial-gradient(
+    320px circle at var(--mx, 50%) var(--my, 50%),
+    rgba(34, 211, 238, 0.16),
+    transparent 62%
+  );
+}
+.spotlight:hover::before {
+  opacity: 1;
+}
+
+/* scrollbars */
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.09);
+  border-radius: 8px;
+}
+::-webkit-scrollbar-thumb:hover { background: rgba(34, 211, 238, 0.35); }
+
+/* skeleton shimmer */
+.skeleton {
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.04) 25%,
+    rgba(255, 255, 255, 0.09) 37%,
+    rgba(255, 255, 255, 0.04) 63%
+  );
+  background-size: 400% 100%;
+  animation: shimmer 1.4s ease-in-out infinite;
+}
+@keyframes shimmer {
+  0% { background-position: 100% 50%; }
+  100% { background-position: 0 50%; }
+}
+
+@keyframes rise-in {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.rise-in { animation: rise-in 0.5s var(--ease-neural) both; }
+
+@keyframes draw-in {
+  to { stroke-dashoffset: 0; }
+}
+
+/* ============================================================
+   Leaflet map (MapPanel) — console styling + severity pulse
+   ============================================================ */
+.leaflet-container {
+  background: #0a0f16;
+  font-family: var(--font-sans);
+}
+/* Tailored tile filters per basemap theme */
+.at-tiles-osm { filter: contrast(1.04) saturate(1.06); }
+.at-tiles-hot { filter: contrast(1.03) saturate(1.08); }
+.at-tiles-satellite { filter: brightness(1.02) contrast(1.05) saturate(1.08); }
+.at-tiles-dark { filter: none; }
+.at-tiles-streets { filter: brightness(0.92) contrast(1.04); }
+.at-tiles-topo { filter: brightness(0.95); }
+.at-tiles { filter: brightness(0.88) contrast(1.04); }
+
+.leaflet-control-attribution {
+  background: rgba(5, 8, 13, 0.75) !important;
+  color: #5a6b80 !important;
+  font-size: 9px !important;
+}
+.leaflet-control-attribution a { color: #8b98a9 !important; }
+.leaflet-bar a {
+  background: rgba(13, 20, 32, 0.85) !important;
+  color: #8b98a9 !important;
+  border-color: rgba(255, 255, 255, 0.1) !important;
+}
+.leaflet-bar a:hover { background: rgba(34, 211, 238, 0.15) !important; color: #22d3ee !important; }
+
+.at-tip {
+  background: rgba(13, 20, 32, 0.94) !important;
+  border: 1px solid rgba(255, 255, 255, 0.14) !important;
+  border-radius: 6px !important;
+  padding: 4px 8px !important;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5) !important;
+  color: #e8eef4 !important;
+}
+.leaflet-tooltip-top::before { border-top-color: rgba(255, 255, 255, 0.14) !important; }
+.leaflet-tooltip-bottom::before { border-bottom-color: rgba(255, 255, 255, 0.14) !important; }
+.leaflet-tooltip-left::before { border-left-color: rgba(255, 255, 255, 0.14) !important; }
+.leaflet-tooltip-right::before { border-right-color: rgba(255, 255, 255, 0.14) !important; }
+.at-tip-title { font-size: 11px; font-weight: 600; white-space: nowrap; }
+.at-tip-state { font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.1em; }
+
+/* severity pulse rings around live markers (critical pulses fastest) */
+.at-pulse { animation: at-pulse-ring 2s ease-out infinite; }
+.at-pulse-crit { animation: at-pulse-ring 1.1s ease-out infinite; }
+@keyframes at-pulse-ring {
+  0% { stroke-opacity: 0.95; stroke-width: 2px; }
+  70% { stroke-opacity: 0; stroke-width: 6px; }
+  100% { stroke-opacity: 0; stroke-width: 6px; }
+}
+.at-marker-crit { animation: at-marker-glow 1.1s ease-in-out infinite; }
+@keyframes at-marker-glow {
+  0%, 100% { fill-opacity: 0.28; }
+  50% { fill-opacity: 0.62; }
+}
+
+/* high-contrast glowing scrollbar for evacuation & telemetry drawers */
+.at-scroll::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+.at-scroll::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.04);
+  border-radius: 4px;
+}
+.at-scroll::-webkit-scrollbar-thumb {
+  background: rgba(34, 211, 238, 0.5);
+  border-radius: 4px;
+}
+.at-scroll::-webkit-scrollbar-thumb:hover {
+  background: rgba(34, 211, 238, 0.85);
+}
+.at-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(34, 211, 238, 0.5) rgba(255, 255, 255, 0.04);
+}
+
+@media print {
+  body * { visibility: hidden !important; }
+  .print-area, .print-area * { visibility: visible !important; }
+  .print-area {
+    position: absolute !important;
+    inset: 0 !important;
+    background: #05080d !important;
+    overflow: visible !important;
+  }
+}

@@ -1,0 +1,93 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://aquatrace.local/contracts/state_change.schema.json",
+  "title": "AquaTrace WebSocket event envelope",
+  "type": "object",
+  "required": ["type", "at"],
+  "properties": {
+    "type": {
+      "type": "string",
+      "enum": ["telemetry_tick", "state_change", "alert", "camera_status", "scenario",
+               "hello", "ping", "agent_note"]
+    },
+    "at": { "type": "string", "format": "date-time" }
+  },
+  "oneOf": [
+    {
+      "properties": {
+        "type": { "const": "telemetry_tick" },
+        "camera_id": { "type": "string" },
+        "water_area_ratio": { "type": "number" },
+        "flow_mean": { "type": "number" },
+        "waterline_y": { "type": "number" },
+        "waterline_delta": { "type": "number" },
+        "confidence": { "type": "number" },
+        "expansion_rate": { "type": "number" },
+        "baseline_rate": { "type": "number" },
+        "anomaly": { "type": "number" },
+        "state": { "type": "string" },
+        "signal": { "type": "string", "enum": ["live", "signal_lost"] }
+      },
+      "required": ["type", "camera_id", "at"]
+    },
+    {
+      "properties": {
+        "type": { "const": "state_change" },
+        "camera_id": { "type": "string" },
+        "from": { "type": "string" },
+        "to": { "type": "string" },
+        "confidence": { "type": "number" },
+        "reasoning": { "type": "string" },
+        "alert_id": { "type": ["string", "null"] }
+      },
+      "required": ["type", "camera_id", "from", "to", "at", "reasoning"]
+    },
+    {
+      "properties": {
+        "type": { "const": "alert" },
+        "alert": { "type": "object" },
+        "action": { "type": "string", "enum": ["created", "updated", "acknowledged", "false_positive"] }
+      },
+      "required": ["type", "alert", "at"]
+    },
+    {
+      "properties": {
+        "type": { "const": "camera_status" },
+        "camera_id": { "type": "string" },
+        "status": { "type": "string", "enum": ["live", "signal_lost", "offline"] }
+      },
+      "required": ["type", "camera_id", "status", "at"]
+    },
+    {
+      "properties": {
+        "type": { "const": "scenario" },
+        "scenario": { "type": "string" },
+        "status": { "type": "string", "enum": ["started", "finished", "stopped"] },
+        "cameras": { "type": "array", "items": { "type": "string" } }
+      },
+      "required": ["type", "scenario", "status", "at"]
+    },
+    {
+      "description": "Connection handshake payload sent on subscribe",
+      "properties": {
+        "type": { "const": "hello" }
+      },
+      "required": ["type", "at"]
+    },
+    {
+      "description": "Idle keep-alive sent when no messages are flowing",
+      "properties": {
+        "type": { "const": "ping" }
+      },
+      "required": ["type", "at"]
+    },
+    {
+      "description": "Agent feedback note (e.g. false-positive baseline update)",
+      "properties": {
+        "type": { "const": "agent_note" },
+        "camera_id": { "type": "string" }
+      },
+      "required": ["type", "camera_id", "at"]
+    }
+  ]
+}
